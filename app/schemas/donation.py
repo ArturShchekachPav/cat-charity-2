@@ -24,3 +24,4 @@ class DonationFullInfoDB(DonationDB):
     invested_amount: int
     fully_invested: bool
     close_date: Optional[datetime] = None
+    user_id: int

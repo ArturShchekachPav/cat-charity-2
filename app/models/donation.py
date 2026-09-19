@@ -1,6 +1,6 @@
 from typing import Optional
 
-from sqlalchemy import CheckConstraint, Text
+from sqlalchemy import CheckConstraint, Text, Integer, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.constants import MIN_FULL_AMOUNT, MIN_INVESTED_AMOUNT
@@ -9,6 +9,7 @@ from app.models.abstract_investment import AbstractInvestment
 
 class Donation(AbstractInvestment):
     comment: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('user.id'), nullable=True)
 
     __table_args__ = (
         CheckConstraint(

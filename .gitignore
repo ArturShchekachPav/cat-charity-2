@@ -133,4 +133,4 @@ dmypy.json
 
 test.db
 .vscode/
-fast_api.db
+*.db

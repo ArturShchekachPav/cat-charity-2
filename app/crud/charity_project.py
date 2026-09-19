@@ -15,8 +15,8 @@ class CRUDCharityProject(CRUDInvestment):
         session: AsyncSession,
     ) -> Optional[int]:
         db_project_id = await session.execute(
-            select(CharityProject.id).where(
-                CharityProject.name == project_name
+            select(self.model.id).where(
+                self.model.name == project_name
             )
         )
         return db_project_id.scalars().first()
