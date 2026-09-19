@@ -12,6 +12,7 @@ from app.api.validators.charity_project import (
     check_project_is_open,
 )
 from app.core.db import get_async_session
+from app.core.user import current_superuser
 from app.crud.charity_project import charity_project_crud
 from app.crud.donation import donation_crud
 from app.schemas.charity_project import (
@@ -20,7 +21,6 @@ from app.schemas.charity_project import (
     CharityProjectUpdate,
 )
 from app.services.investment import close_if_fully_invested, invest
-from app.core.user import current_superuser
 
 router = APIRouter()
 
@@ -32,9 +32,14 @@ async def get_all_charity_projects(session: SessionDep):
     return await charity_project_crud.get_all(session)
 
 
-@router.post("/", response_model=CharityProjectDB, dependencies=[Depends(current_superuser)])
+@router.post(
+    "/",
+    response_model=CharityProjectDB,
+    dependencies=[Depends(current_superuser)],
+)
 async def create_new_charity_project(
-    obj_in: CharityProjectCreate, session: SessionDep,
+    obj_in: CharityProjectCreate,
+    session: SessionDep,
 ):
     await check_charity_project_name_duplicate(obj_in.name, session)
     new_project = await charity_project_crud.create(obj_in, session)
@@ -45,7 +50,11 @@ async def create_new_charity_project(
     return new_project
 
 
-@router.patch("/{project_id}", response_model=CharityProjectDB, dependencies=[Depends(current_superuser)])
+@router.patch(
+    "/{project_id}",
+    response_model=CharityProjectDB,
+    dependencies=[Depends(current_superuser)],
+)
 async def partiallyupdate_charity_project(
     project_id: int, obj_in: CharityProjectUpdate, session: SessionDep
 ):
@@ -65,7 +74,11 @@ async def partiallyupdate_charity_project(
     return charity_project
 
 
-@router.delete("/{project_id}", response_model=CharityProjectDB, dependencies=[Depends(current_superuser)])
+@router.delete(
+    "/{project_id}",
+    response_model=CharityProjectDB,
+    dependencies=[Depends(current_superuser)],
+)
 async def remove_charity_project(
     project_id: int,
     session: SessionDep,

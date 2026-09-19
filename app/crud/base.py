@@ -1,19 +1,26 @@
+from typing import Optional
+
 from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Optional
-from app.models import User
+
 from app.core.db import Base
+from app.models import User
 
 
 class CRUDBase:
     def __init__(self, model: type[Base]):
         self.model = model
 
-    async def create(self, obj_in: BaseModel, session: AsyncSession, user: Optional[User] = None):
+    async def create(
+        self,
+        obj_in: BaseModel,
+        session: AsyncSession,
+        user: Optional[User] = None,
+    ):
         obj_in_data = obj_in.model_dump()
         if user is not None:
-            obj_in_data['user_id'] = user.id
+            obj_in_data["user_id"] = user.id
         new_obj = self.model(**obj_in_data)
         session.add(new_obj)
         await session.flush()

@@ -1,6 +1,8 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import Optional
+
 from pydantic import EmailStr
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
 
 class Settings(BaseSettings):
     app_title: str = "QRKot"
@@ -9,7 +11,7 @@ class Settings(BaseSettings):
         " проектов связанных с кошками"
     )
     database_url: str = "sqlite+aiosqlite:///./qrkot.db"
-    secret: str = 'SECRET'
+    secret: str = "SECRET"
     first_superuser_email: Optional[EmailStr] = None
     first_superuser_password: Optional[str] = None
 
